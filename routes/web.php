@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ScheduleController;
 
 Route::get('/', function () {
-    return view('pcmap');
+    return view('menu/pcmap');
 });
 
 Route::post('/schedules', [ScheduleController::class, 'store']);

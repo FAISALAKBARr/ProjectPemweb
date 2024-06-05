@@ -82,25 +82,21 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS and dependencies -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   
-  <!-- Custom JavaScript -->
   <script>
     function showModal(itemNumber) {
         document.getElementById('modalItemNumber').textContent = itemNumber;
         document.getElementById('itemNumber').value = itemNumber;
         $('#scheduleModal').modal('show');
 
-        // Ambil data jadwal dari server
         fetch('/schedules/by-item-number?item_number=' + itemNumber)
             .then(response => response.json())
             .then(data => {
-                // Tampilkan jadwal dalam modal
                 const scheduleList = document.getElementById('scheduleList');
-                scheduleList.innerHTML = ''; // Kosongkan daftar jadwal sebelum menambahkan yang baru
+                scheduleList.innerHTML = ''; 
                 if (data.schedules.length > 0) {
                     data.schedules.forEach(schedule => {
                         const listItem = document.createElement('li');
@@ -121,7 +117,7 @@
         customDurationInput.style.display = 'block';
       } else {
         customDurationInput.style.display = 'none';
-        customDurationInput.value = ''; // Reset custom duration value
+        customDurationInput.value = '';
       }
     }
 

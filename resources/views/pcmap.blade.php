@@ -11,30 +11,30 @@
   <div class="container">
     <div class="row">
       <div class="col-3">
-        <button type="button" class="btn btn-light" onclick="showModal(1)">1</button>
+        <button type="button" class="btn btn-pc btn-light" onclick="showModal(1)">1</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-light" onclick="showModal(2)">2</button>
+        <button type="button" class="btn btn-pc btn-light" onclick="showModal(2)">2</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-light" onclick="showModal(3)">3</button>
+        <button type="button" class="btn btn-pc btn-light" onclick="showModal(3)">3</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-light" onclick="showModal(4)">4</button>
+        <button type="button" class="btn btn-pc btn-light" onclick="showModal(4)">4</button>
       </div>
     </div>
     <div class="row">
       <div class="col-3">
-        <button type="button" class="btn btn-light" onclick="showModal(5)">5</button>
+        <button type="button" class="btn btn-pc btn-light" onclick="showModal(5)">5</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-light" onclick="showModal(6)">6</button>
+        <button type="button" class="btn btn-pc btn-light" onclick="showModal(6)">6</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-light" onclick="showModal(7)">7</button>
+        <button type="button" class="btn btn-pc btn-light" onclick="showModal(7)">7</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-light" onclick="showModal(8)">8</button>
+        <button type="button" class="btn btn-pc btn-light" onclick="showModal(8)">8</button>
       </div>
     </div>
   </div>
@@ -50,30 +50,33 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id="scheduleForm">
+            <input type="hidden" id="itemNumber" name="item_number">
             <div class="form-group">
               <label for="date">Date:</label>
-              <input type="date" class="form-control" id="date" required>
+              <input type="date" class="form-control" id="date" name="date" required>
             </div>
             <div class="form-group">
               <label for="time">Time:</label>
-              <input type="time" class="form-control" id="time" required>
+              <input type="time" class="form-control" id="time" name="time" required>
             </div>
             <div class="form-group">
               <label for="duration">Duration:</label>
-              <select class="form-control" id="duration" onchange="toggleCustomDuration()">
+              <select class="form-control" id="duration" name="duration" onchange="toggleCustomDuration()">
                 <option value="30">30 minutes</option>
                 <option value="60">1 hour</option>
                 <option value="120">2 hours</option>
                 <option value="custom">Custom</option>
               </select>
-              <input type="number" class="form-control mt-2" id="customDuration" min="30" placeholder="Enter duration in minutes" style="display: none;">
+              <input type="number" class="form-control mt-2" id="customDuration" name="custom_duration" min="30" placeholder="Enter duration in minutes" style="display: none;">
             </div>
+            <h5>Schedules for Item <span id="modalItemNumber"></span>:</h5>
+            <ul id="scheduleList"></ul>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary" onclick="saveSchedule()">Save changes</button>
         </div>
       </div>
     </div>
@@ -83,11 +86,32 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+  
+  <!-- Custom JavaScript -->
   <script>
     function showModal(itemNumber) {
-      document.getElementById('modalItemNumber').textContent = itemNumber;
-      $('#scheduleModal').modal('show');
+        document.getElementById('modalItemNumber').textContent = itemNumber;
+        document.getElementById('itemNumber').value = itemNumber;
+        $('#scheduleModal').modal('show');
+
+        // Ambil data jadwal dari server
+        fetch('/schedules/by-item-number?item_number=' + itemNumber)
+            .then(response => response.json())
+            .then(data => {
+                // Tampilkan jadwal dalam modal
+                const scheduleList = document.getElementById('scheduleList');
+                scheduleList.innerHTML = ''; // Kosongkan daftar jadwal sebelum menambahkan yang baru
+                if (data.schedules.length > 0) {
+                    data.schedules.forEach(schedule => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${schedule.date} - ${schedule.time} (${schedule.duration} minutes)`;
+                        scheduleList.appendChild(listItem);
+                    });
+                } else {
+                    scheduleList.textContent = 'No schedules found.';
+                }
+            })
+            .catch(error => console.error('Error:', error));
     }
 
     function toggleCustomDuration() {
@@ -97,7 +121,35 @@
         customDurationInput.style.display = 'block';
       } else {
         customDurationInput.style.display = 'none';
+        customDurationInput.value = ''; // Reset custom duration value
       }
+    }
+
+    function saveSchedule() {
+      const form = document.getElementById('scheduleForm');
+      const formData = new FormData(form);
+
+      const duration = formData.get('duration');
+      if (duration === 'custom') {
+        formData.set('duration', formData.get('custom_duration'));
+        formData.delete('custom_duration');
+      }
+
+      fetch('/schedules', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          'Accept': 'application/json',
+        },
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        $('#scheduleModal').modal('hide');
+        form.reset();
+      })
+      .catch(error => console.error('Error:', error));
     }
   </script>
 </body>

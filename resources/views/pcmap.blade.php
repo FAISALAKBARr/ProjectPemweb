@@ -11,30 +11,30 @@
   <div class="container">
     <div class="row">
       <div class="col-3">
-        <button type="button" class="btn btn-pc btn-light" onclick="showModal(1)">1</button>
+        <button type="button" class="btn btn-light" onclick="showModal(1)">1</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-pc btn-light" onclick="showModal(2)">2</button>
+        <button type="button" class="btn btn-light" onclick="showModal(2)">2</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-pc btn-light" onclick="showModal(3)">3</button>
+        <button type="button" class="btn btn-light" onclick="showModal(3)">3</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-pc btn-light" onclick="showModal(4)">4</button>
+        <button type="button" class="btn btn-light" onclick="showModal(4)">4</button>
       </div>
     </div>
     <div class="row">
       <div class="col-3">
-        <button type="button" class="btn btn-pc btn-light" onclick="showModal(5)">5</button>
+        <button type="button" class="btn btn-light" onclick="showModal(5)">5</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-pc btn-light" onclick="showModal(6)">6</button>
+        <button type="button" class="btn btn-light" onclick="showModal(6)">6</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-pc btn-light" onclick="showModal(7)">7</button>
+        <button type="button" class="btn btn-light" onclick="showModal(7)">7</button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-pc btn-light" onclick="showModal(8)">8</button>
+        <button type="button" class="btn btn-light" onclick="showModal(8)">8</button>
       </div>
     </div>
   </div>

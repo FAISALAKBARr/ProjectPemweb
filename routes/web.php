@@ -14,5 +14,6 @@ Route::get('/schedules/by-item-number', [ScheduleController::class, 'getByItemNu
 Route::get('/order', [MenuItemController::class, 'index']);
 Route::get('/menu-items', [MenuItemController::class, 'index']);
 Route::get('/menu-items/{id}', [MenuItemController::class, 'show']);
+terserah
 Route::get('/orders/by-item-id', [OrderController::class, 'byItemId']);
 Route::post('/orders', [OrderController::class, 'store']);

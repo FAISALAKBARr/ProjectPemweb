@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Schedule;
+use Carbon\Carbon;
 
 class ScheduleController extends Controller
 {
@@ -32,12 +33,17 @@ class ScheduleController extends Controller
         Schedule::create($validated);
     
         return response()->json(['message' => 'Schedule saved successfully!']);
-    }   
+    }  
     
     public function getByItemNumber(Request $request)
     {
         $itemNumber = $request->input('item_number');
-        $schedules = Schedule::where('item_number', $itemNumber)->get();
+        $today = Carbon::today()->toDateString();
+
+        $schedules = Schedule::where('item_number', $itemNumber)
+            ->where('date', '>=', $today)
+            ->get();
+        
         return response()->json(['schedules' => $schedules]);
     }
 }

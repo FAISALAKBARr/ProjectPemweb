@@ -29,15 +29,27 @@
     </style>
 </head>
   <body>
+    @auth
+      @include('partials.sidebar')
+      @include('partials.navbar')
+    @endauth
 
-    <div id="loading-screen">
-        <div class="spinner"></div>
-    </div>
-    @include('partials.sidebar')
-    @include('partials.navbar')
-    <section class="home-section">
-        @yield('content')
-    </section>
+    @if(Request::is('login') || Request::is('register'))
+        <div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    @endif
+
+    @yield('auth')
+
+    @if(!(Request::is('login') || Request::is('register')))
+        <section class="home-section">
+            @yield('content')
+        </section>
+    @endif
+
+    @if(Request::is('login') || Request::is('register'))
+        </div>
+    @endif
+
     <div class="sidebar-backdrop"></div>
 
     <!-- Add link to JavaScript file -->

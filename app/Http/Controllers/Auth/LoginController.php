@@ -14,15 +14,20 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('/');
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        if ($user->blocked) {
+            Auth::logout();
+            return redirect()->back()->withErrors(['email' => 'Akun Anda telah diblokir.']);
         }
-
-        return redirect()->back()->withErrors(['email' => 'Invalid email or password']);
+        return redirect()->intended('/');
     }
+
+    return redirect()->back()->withErrors(['email' => 'Email atau password tidak valid.']);
+}
     
     public function logout(Request $request)
     {

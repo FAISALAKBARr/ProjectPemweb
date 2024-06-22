@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => 'user1234'
         ]);
+
         
         $this->call(MenuItemsTableSeeder::class);
         

@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat with Customer Service</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .chat-box {
+        .tailwind-container .chat-box {
             height: 50vh;
             max-height: 50vh;
             overflow-y: auto;
@@ -18,35 +17,10 @@
             display: flex;
             flex-direction: column;
         }
-        .chat-bubble {
-            max-width: 75%;
-            word-wrap: break-word;
-        }
-        .chat-footer {
-            text-align: right;
-        }
-        @media (max-width: 768px) {
-            .chat-box {
-                height: 60vh;
-                padding: 5px;
-            }
-            .chat-bubble {
-                max-width: 100%;
-            }
-            .container h2 {
-                text-align: center;
-                font-size: 1.5rem;
-            }
-        }
-        @media (max-width: 480px) {
-            .chat-box {
-                height: 65vh;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container mx-auto p-4">
+    <div class="container tailwind-container">
         <h2 class="text-center text-2xl mb-4">Chat with Customer Service</h2>
 
         <div class="flex flex-wrap">
@@ -64,7 +38,8 @@
             <div class="{{ Auth::user()->role === 'admin' ? 'w-full md:w-3/4' : 'w-full' }}">
                 <div class="chat-box" id="chatBox"></div>
                 <textarea id="message" class="form-control mt-2" rows="3" placeholder="Type your message here..."></textarea>
-                <button class="btn btn-primary mt-2" onclick="sendMessage()">Send</button>
+                <input type="file" id="imageInput" class="form-control mt-2" accept="image/*">
+                <button class="btn btn-primary" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
@@ -72,7 +47,7 @@
     <script>
         let selectedUserId = {{ Auth::user()->role === 'admin' ? 'null' : $admin->id }};
         const chatBox = document.getElementById('chatBox');
-        
+
         function selectUser(userId) {
             selectedUserId = userId;
             fetchMessages();
@@ -99,21 +74,32 @@
                             chatClass = 'chat chat-start';
                         }
 
-                        messageElement.innerHTML = `
-                            <div class="${chatClass}">
-                                <div class="chat-image avatar">
-                                    <div class="w-10 rounded-full">
-                                        <img alt="Profile Picture" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                        if (message.message_type === 'text') {
+                            messageElement.innerHTML = `
+                                <div class="${chatClass}">
+                                    <div class="chat-header">
+                                        ${senderName}
+                                        <time class="text-xs opacity-50">${new Date(message.created_at).toLocaleTimeString()}</time>
                                     </div>
+                                    <div class="chat-bubble bg-blue-100 p-2 rounded-md">
+                                        <pre>${message.message}</pre>
+                                    </div>
+                                    <div class="chat-footer text-xs opacity-50">Seen</div>
                                 </div>
-                                <div class="chat-header">
-                                    ${senderName}
-                                    <time class="text-xs opacity-50">${new Date(message.created_at).toLocaleTimeString()}</time>
+                            `;
+                        } else if (message.message_type === 'image') {
+                            messageElement.innerHTML = `
+                                <div class="${chatClass}">
+                                    <div class="chat-header">
+                                        ${senderName}
+                                        <time class="text-xs opacity-50">${new Date(message.created_at).toLocaleTimeString()}</time>
+                                    </div>
+                                    <img src="/storage/${message.message}" class="chat-bubble bg-blue-100 p-2 rounded-md" style="max-width: 100%; max-height: 200px;">
+                                    <div class="chat-footer text-xs opacity-50">Seen</div>
                                 </div>
-                                <div class="chat-bubble bg-blue-100 p-2 rounded-md">${message.message}</div>
-                                <div class="chat-footer text-xs opacity-50">Seen</div>
-                            </div>
-                        `;
+                            `;
+                        }
+
                         chatBox.appendChild(messageElement);
                     });
 
@@ -123,25 +109,34 @@
 
         function sendMessage() {
             let messageInput = document.getElementById('message');
+            let imageInput = document.getElementById('imageInput');
             let message = messageInput.value;
+            let image = imageInput.files[0];
 
-            if (!message || !selectedUserId) return;
+            if (!message && !image) return;
+            if (!selectedUserId) return;
+
+            let formData = new FormData();
+            formData.append('to_user_id', selectedUserId);
+            if (image) {
+                formData.append('image', image);
+                formData.append('message', ''); // Kosongkan pesan teks jika ada gambar
+            } else {
+                formData.append('message', message);
+            }
 
             fetch('/chat/send', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                body: JSON.stringify({
-                    to_user_id: selectedUserId,
-                    message: message
-                })
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'Message Sent!') {
                     messageInput.value = '';
+                    imageInput.value = '';
                     fetchMessages();
                 }
             });
@@ -151,4 +146,4 @@
         setInterval(fetchMessages, 5000);
     </script>
 </body>
-</html>
+

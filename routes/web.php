@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MenuItemController;
@@ -7,17 +8,27 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\GoogleAuthController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Middleware\EnsureAdmin; 
+use App\Http\Controllers\ChatController;
 
-Route::middleware(['auth', 'is_admin'])->group(function () {
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::post('/admin/users/{user}/block', [UserController::class, 'block'])->name('admin.users.block');
-    Route::post('/admin/users/{user}/unblock', [UserController::class, 'unblock'])->name('admin.users.unblock');
+Route::middleware('auth')->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.cs');
+    Route::get('/chat/messages/{userId}', [ChatController::class, 'fetchMessages']);
+    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+});
 
+Route::middleware(['auth', EnsureAdmin::class])->group(function () { // Gunakan kelas EnsureAdmin secara langsung
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::post('/admin/block/{id}', [AdminController::class, 'block'])->name('admin.block');
+    Route::post('/admin/unblock/{id}', [AdminController::class, 'unblock'])->name('admin.unblock');
+    Route::delete('/admin/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
+});
+
+Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('menu.pcmap');
     });
-    
+
     Route::post('/schedules', [ScheduleController::class, 'store']);
     Route::get('/schedules/by-item-number', [ScheduleController::class, 'getByItemNumber']);
 
@@ -31,7 +42,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-    
+
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'create'])->name('register.post');
 });

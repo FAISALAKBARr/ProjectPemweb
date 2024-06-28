@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'blocked', // Tambahkan kolom blocked
     ];
 
     /**
@@ -38,10 +40,11 @@ class User extends Authenticatable
      * @return array<string, string>
      */
     protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+{
+    return [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'blocked' => 'boolean', // Tambahkan cast untuk blocked
+    ];
+}
 }

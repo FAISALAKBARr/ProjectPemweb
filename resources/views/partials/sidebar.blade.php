@@ -39,6 +39,16 @@
       </a>
       <span class="tooltip shadow-sm">History</span>
     </li>
+
+    @if(Auth::check() && Auth::user()->role === 'admin')
+    <li class="{{ Request::is('') ? 'active' : '' }}">
+      <a href={{ route('admin.index') }}>
+        <i class="bi bi-person-circle"></i>
+        <span class="link_name">Account Management</span>
+      </a>
+      <span class="tooltip shadow-sm">Account Management</span>
+    </li>
+    @endif
   </ul>
   <div class="copyright">
     <p title="&copy; <?php echo date("Y"); ?> UdinTechnology. All rights reserved.">&copy; <?php echo date("Y"); ?> @lang('sidebar.UdinTechnology. All rights reserved')</p>

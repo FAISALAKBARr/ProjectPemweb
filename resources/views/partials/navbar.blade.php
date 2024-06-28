@@ -1,5 +1,8 @@
 <nav class="navbar shadow-sm navbar-expand sticky-top" id="navbar">
     <div class="logo_details">
+        @if(!Request::is('profile'))
+            <i class="bi bi-list" id="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('navbar.Toggle Menu')"></i>
+        @endif
         <div class="logo_name">
             <a href="{{ ("/") }}" class="text-decoration-none">Todo-List</a>
         </div>

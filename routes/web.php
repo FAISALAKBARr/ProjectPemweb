@@ -14,12 +14,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminPaymentController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\GoogleAuthController;
-<<<<<<< HEAD
-<<<<<<< HEAD
-use App\Http\Middleware\EnsureAdmin; 
-use App\Http\Controllers\ChatController;
-=======
->>>>>>> 8e2e0b1d1d1c6284a3e93e1e1b2e06cbcefc673f
 
 Route::middleware('auth')->group(function () {
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.cs');
@@ -39,9 +33,6 @@ Route::middleware(['auth', EnsureAdmin::class])->group(function () { // Gunakan 
     Route::delete('/admin/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
 });
 
-=======
-
->>>>>>> d945ae7bc962db086d6800565fbe615c4698cfdd
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('menu.place');

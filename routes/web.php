@@ -8,6 +8,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+<<<<<<< HEAD
 use App\Http\Middleware\EnsureAdmin; 
 use App\Http\Controllers\ChatController;
 
@@ -24,6 +25,9 @@ Route::middleware(['auth', EnsureAdmin::class])->group(function () { // Gunakan 
     Route::delete('/admin/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
 });
 
+=======
+
+>>>>>>> d945ae7bc962db086d6800565fbe615c4698cfdd
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('menu.pcmap');

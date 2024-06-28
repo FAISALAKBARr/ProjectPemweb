@@ -1,44 +1,23 @@
 <div class="sidebar">
   <ul class="nav-list">
+    @if(Auth::check() && Auth::user()->role === 'user')
     <li class="{{ Request::is('') ? 'active' : '' }}">
-      <a href="">
+      <a href="{{ route('admin.index') }}">
         <i class="bi bi-calendar2-check"></i>
-        <span class="link_name">Today</span>
+        <span class="link_name">Order PC</span>
       </a>
-      <span class="tooltip shadow-sm shadow-sm">Today</span>
+      <span class="tooltip shadow-sm shadow-sm">Order PC</span>
     </li>
     
+  
     <li class="{{ Request::is('') ? 'active' : '' }}">
-      <a href="">
+      <a href="{{ route('order') }}">
         <i class="bi bi-exclamation-square"></i>
-        <span class="link_name">Priority</span>
+        <span class="link_name">Order Makan/Minum</span>
       </a>
-      <span class="tooltip shadow-sm">Priority</span>
+      <span class="tooltip shadow-sm">Order Makan/Minum</span>
     </li>
-    
-    <li class="{{ Request::is('') ? 'active' : '' }}">
-      <a href="">
-        <i class="bi bi-calendar2-week"></i>
-        <span class="link_name">Upcoming</span>
-      </a>
-      <span class="tooltip shadow-sm">Upcoming</span>
-    </li>
-
-    <li class="{{ Request::is('') ? 'active' : '' }}">
-      <a href="">
-        <i class="bi bi-tags"></i>
-        <span class="link_name">Labels</span>
-      </a>
-      <span class="tooltip shadow-sm">Labels</span>
-    </li>
-
-    <li class="{{ Request::is('') ? 'active' : '' }}">
-      <a href="">
-        <i class="bi bi-clock-history"></i>
-        <span class="link_name">History</span>
-      </a>
-      <span class="tooltip shadow-sm">History</span>
-    </li>
+    @endif
 
     @if(Auth::check() && Auth::user()->role === 'admin')
     <li class="nav-item">
@@ -56,6 +35,13 @@
     </li>
     
     @endif
+    <li class="{{ Request::is('') ? 'active' : '' }}">
+      <a href="{{ route('chat.cs') }}">
+        <i class="bi bi-tags"></i>
+        <span class="link_name">Customer Service</span>
+      </a>
+      <span class="tooltip shadow-sm">Costumer Service</span>
+    </li>
   </ul>
   <div class="copyright">
     <p title="&copy; <?php echo date("Y"); ?> UdinTechnology. All rights reserved.">&copy; <?php echo date("Y"); ?> @lang('sidebar.UdinTechnology. All rights reserved')</p>

@@ -13,6 +13,7 @@ class CreateMessagesTable extends Migration
             $table->unsignedBigInteger('from_user_id');
             $table->unsignedBigInteger('to_user_id');
             $table->text('message');
+            $table->string('message_type')->default('text');
             $table->timestamps();
 
             // Tambahkan foreign keys

@@ -50,7 +50,7 @@ class ChatController extends Controller
                           ->where('from_user_id', $admin->id);
                 }
             })
-            ->with('sender') // Assumes 'sender' relationship is defined in the Message model
+            ->with('sender') // Asumsikan 'sender' relationship didefinisikan di model Message
             ->orderBy('created_at', 'asc')
             ->get();
 
@@ -62,10 +62,28 @@ class ChatController extends Controller
         $currentUserId = Auth::id();
         $admin = User::where('role', 'admin')->first();
 
+        $messageType = 'text'; // Default tipe pesan
+        $messageContent = $request->message; // Isi pesan teks
+        $file = $request->file('image'); // Gambar yang diunggah
+
+        // Jika ada gambar yang diunggah
+        if ($file) {
+            // Validasi file gambar
+            $request->validate([
+                'image' => 'image|max:2048' // Maksimal ukuran file 2MB
+            ]);
+
+            // Simpan gambar ke penyimpanan publik dan dapatkan path
+            $path = $file->store('chat_images', 'public');
+            $messageContent = $path; // Isi pesan adalah path gambar
+            $messageType = 'image'; // Tipe pesan adalah gambar
+        }
+
         $message = new Message();
         $message->from_user_id = $currentUserId;
         $message->to_user_id = $request->to_user_id ? $request->to_user_id : $admin->id;
-        $message->message = $request->message;
+        $message->message = $messageContent;
+        $message->message_type = $messageType; // Simpan tipe pesan
         $message->save();
 
         return response()->json(['status' => 'Message Sent!']);

@@ -1,19 +1,14 @@
-<nav class="navbar bg-light shadow-sm navbar-expand sticky-top" id="navbar">
+<nav class="navbar shadow-sm navbar-expand sticky-top" id="navbar">
     <div class="logo_details">
+        @if(!Request::is('profile'))
+            <i class="bi bi-list" id="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('navbar.Toggle Menu')"></i>
+        @endif
         <div class="logo_name">
-            <a href="" class="text-decoration-none">Todo-List</a>
+            <a href="{{ ("/") }}" class="text-decoration-none">Todo-List</a>
         </div>
     </div>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-                <form class="d-flex search-form" action="" method="GET">
-                    <div class="input-group" style="margin-top: 3px; margin-right: 3px;">
-                        <input class="form-control border-dark-subtle rounded-start search-input" type="search" name="query" placeholder="Search tasks" aria-label="Search" required>
-                        <button class="btn border-dark-subtle rounded-end search-button" type="submit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search"><i class="bi bi-search"></i></button>
-                    </div>
-                </form>
-            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle rounded py-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings">
                     <i class="bi bi-gear"></i>
@@ -28,17 +23,10 @@
                         </div>
                     </li>
                     <li class="mb-1">
-                        <form action="">
+                        <form action="{{ route('profile') }}">
                             @csrf
                             <button type="submit" class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Profile"><i class="bi bi-person"></i> Profile</button>
                         </form>
-                    </li>
-                    <li class="dropdown mb-1" id="languageDropdown">
-                        <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="left" title="Language"><i class="bi bi-translate"></i> Language</a>
-                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                            <li><a class="dropdown-item" href=""><i class="flag-icon flag-icon-id"></i> Bahasa Indonesia</a></li>
-                            <li><a class="dropdown-item" href=""><i class="flag-icon flag-icon-us"></i> English</a></li>
-                        </ul>
                     </li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST">

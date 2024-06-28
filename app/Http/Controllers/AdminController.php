@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Payment;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {

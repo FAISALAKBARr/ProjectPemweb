@@ -1,16 +1,25 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Middleware\EnsureAdmin; 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\AdminPaymentController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use App\Http\Middleware\EnsureAdmin; 
 use App\Http\Controllers\ChatController;
+=======
+>>>>>>> 8e2e0b1d1d1c6284a3e93e1e1b2e06cbcefc673f
 
 Route::middleware('auth')->group(function () {
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.cs');
@@ -20,6 +29,11 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', EnsureAdmin::class])->group(function () { // Gunakan kelas EnsureAdmin secara langsung
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    
+    Route::get('/admin/payments', [AdminPaymentController::class, 'payments'])->name('admin.payments');
+    Route::delete('/payments/{payment}', [AdminPaymentController::class, 'destroy'])->name('admin.payments.destroy');
+    Route::patch('/admin/payments/{id}/confirm', [PaymentController::class, 'confirm'])->name('admin.payments.confirm');
+    
     Route::post('/admin/block/{id}', [AdminController::class, 'block'])->name('admin.block');
     Route::post('/admin/unblock/{id}', [AdminController::class, 'unblock'])->name('admin.unblock');
     Route::delete('/admin/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
@@ -30,17 +44,31 @@ Route::middleware(['auth', EnsureAdmin::class])->group(function () { // Gunakan 
 >>>>>>> d945ae7bc962db086d6800565fbe615c4698cfdd
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
-        return view('menu.pcmap');
+        return view('menu.place');
     });
+    
+    Route::get('/pcmap', function () {
+        return view('menu.pcmap');
+    })->name('pcmap');
 
-    Route::post('/schedules', [ScheduleController::class, 'store']);
-    Route::get('/schedules/by-item-number', [ScheduleController::class, 'getByItemNumber']);
+    Route::get('/places', [PlaceController::class, 'show'])->name('places.show');
+    Route::post('/places/select', [PlaceController::class, 'select'])->name('places.select');
+
+    Route::get('/schedules/by-item-number', [ScheduleController::class, 'getSchedulesByItemNumber']);
+    Route::get('/schedules/check-overlap', [ScheduleController::class, 'checkOverlap']);
+
+    Route::get('/payment', [PaymentController::class, 'show'])->name('payment.show');
+    Route::post('/payment/upload', [PaymentController::class, 'uploadPaymentProof'])->name('payment.upload');
 
     Route::get('/order', [MenuItemController::class, 'index']);
     Route::get('/menu-items', [MenuItemController::class, 'index']);
     Route::get('/menu-items/{id}', [MenuItemController::class, 'show']);
     Route::get('/orders/by-item-id', [OrderController::class, 'byItemId']);
     Route::post('/orders', [OrderController::class, 'store']);
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->middleware('auth');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy')->middleware('auth');    
 });
 
 Route::middleware('guest')->group(function () {

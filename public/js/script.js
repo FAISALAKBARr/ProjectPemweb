@@ -1,9 +1,3 @@
-// loading screen
-window.addEventListener('load', function () {
-    const loadingScreen = document.getElementById('loading-screen');
-    loadingScreen.style.display = 'none';
-});
-
 //sidebar button
 window.onload = function () {
     const sidebar = document.querySelector(".sidebar");

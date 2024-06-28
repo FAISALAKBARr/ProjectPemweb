@@ -3,11 +3,6 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            {{-- Tambahkan kode sidebar di sini --}}
-            @include('partials.sidebar')
-        </div>
-        <div class="col-md-9">
             <h1>Manajemen Pengguna</h1>
 
             @if (session('status'))
@@ -53,7 +48,6 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
 @endsection

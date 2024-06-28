@@ -41,6 +41,12 @@
     </li>
 
     @if(Auth::check() && Auth::user()->role === 'admin')
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('admin.payments') }}">
+        <i class="bi bi-pc-display-horizontal"></i>
+        <span class="link_name">PC Order Management</span>
+      </a>
+    </li>  
     <li class="{{ Request::is('') ? 'active' : '' }}">
       <a href={{ route('admin.index') }}>
         <i class="bi bi-person-circle"></i>
@@ -48,6 +54,7 @@
       </a>
       <span class="tooltip shadow-sm">Account Management</span>
     </li>
+    
     @endif
   </ul>
   <div class="copyright">

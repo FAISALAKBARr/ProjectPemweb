@@ -17,11 +17,17 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'user@example.com',
             'password' => 'user1234'
         ]);
 
-        
+        User::factory()->create([
+            'name' => 'Test Admin',
+            'email' => 'admin@example.com',
+            'password' => 'admin123',
+            'role' => 'admin'
+        ]);
+
         $this->call(MenuItemsTableSeeder::class);
         
     }

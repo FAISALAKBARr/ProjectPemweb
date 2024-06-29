@@ -1,7 +1,10 @@
 <nav class="navbar shadow-sm navbar-expand sticky-top" id="navbar">
     <div class="logo_details">
         <div class="logo_name">
-            <a href="{{ ("/") }}" class="text-decoration-none">Todo-List</a>
+            <a href="{{ ("/") }}" class="text-decoration-none">
+                <img src="{{ asset('img/internet-cafe.png') }}" class="mb-1" alt="Internet Cafe Logo" width="20" height="20">
+                Todo-List
+            </a>
         </div>
     </div>
     <div class="collapse navbar-collapse" id="navbarNav">

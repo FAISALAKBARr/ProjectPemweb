@@ -48,13 +48,13 @@
                 
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6 pe-md-2 p-0 order-2 order-md-1">
+                        {{-- <div class="col-md-6 pe-md-2 p-0 order-2 order-md-1">
                             <a href="#" id="account" class="btn btn-light d-flex align-items-center justify-content-center mb-2">
                                 <img src="{{ asset('img/logo/facebook-logo.png') }}" alt="Facebook Logo" style="height: 20px; width: auto;" class="me-2">
                                 <span>Facebook</span>
                             </a>
-                        </div>
-                        <div class="col-md-6 ps-md-2 p-0 order-1 order-md-2">
+                        </div> --}}
+                        <div class="col ps-md-2 p-0 order-1 order-md-2">
                             <a href="{{ route('google.auth') }}" id="account" class="btn btn-light d-flex align-items-center justify-content-center mb-2">
                                 <img src="{{ asset('img/logo/google-logo.png') }}" alt="Google Logo" style="height: 20px; width: auto;" class="me-2">
                                 <span>Google</span>
@@ -71,11 +71,11 @@
     </div>
     <div class="imgBx">
         <div class="text-center">
-            <h5>Manage Your Tasks Effortlessly</h5>
-            <h1>Welcome Back Friend</h1>
-            <p>A powerful to-do list app for staying organized and boosting your productivity.</p>
-        </div>
-        <img src="img/curved-images/curved-11.jpg" alt="">
+            <h5>Discover the Best Internet Experience</h5>
+            <h1>Join Us Today!</h1>
+            <p>Start enjoying reliable internet services and efficient task management with our Internet Cafe.</p>  
+        </div>         
+        <img src="img/bg2.jpg" alt="">
     </div>
 </section>
 @endsection

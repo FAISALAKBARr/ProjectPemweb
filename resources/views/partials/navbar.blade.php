@@ -4,7 +4,10 @@
             <i class="bi bi-list" id="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('navbar.Toggle Menu')"></i>
         @endif
         <div class="logo_name">
-            <a href="{{ ("/") }}" class="text-decoration-none">Todo-List</a>
+            <a href="{{ ("/") }}" class="text-decoration-none">
+                <img src="{{ asset('img/internet-cafe.png') }}" class="mb-1" alt="Internet Cafe Logo" width="20" height="20">
+                Todo-List
+            </a>
         </div>
     </div>
     <div class="collapse navbar-collapse" id="navbarNav">

@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment', [PaymentController::class, 'show'])->name('payment.show');
     Route::post('/payment/upload', [PaymentController::class, 'uploadPaymentProof'])->name('payment.upload');
 
-    Route::get('/order', [MenuItemController::class, 'index'])->name('order');
+    Route::get('/order', [MenuItemController::class, 'index']);
     Route::get('/menu-items', [MenuItemController::class, 'index']);
     Route::get('/menu-items/{id}', [MenuItemController::class, 'show']);
     Route::get('/orders/by-item-id', [OrderController::class, 'byItemId']);
@@ -68,9 +68,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'create'])->name('register.post');
+
+    Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.auth');
+    Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.auth');
-Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);

@@ -1,5 +1,5 @@
-<p align="center"><a href="" target="_blank"><img src="public\img\internet-cafe.png" width="40" alt="Internet Cafe Logo"></a></p>
-<h1>Internet Cafe Management System</h1>
+<p align="center"><a href="" target="_blank"><img src="public\img\internet-cafe.png" width="100" alt="Internet Cafe Logo"></a></p>
+<h1 align="center">Internet Cafe Management System</h1>
 
 ## About Internet Cafe Management System
 

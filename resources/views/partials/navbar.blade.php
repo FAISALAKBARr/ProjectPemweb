@@ -6,7 +6,7 @@
         <div class="logo_name">
             <a href="{{ ("/") }}" class="text-decoration-none">
                 <img src="{{ asset('img/internet-cafe.png') }}" class="mb-1" alt="Internet Cafe Logo" width="20" height="20">
-                Todo-List
+                Internet Cafe
             </a>
         </div>
     </div>

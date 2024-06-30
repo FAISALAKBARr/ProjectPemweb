@@ -8,8 +8,6 @@
       </a>
       <span class="tooltip shadow-sm shadow-sm">Order PC</span>
     </li>
-    
-  
     <li class="{{ Request::is('') ? 'active' : '' }}">
       <a href="{{ route('order') }}">
         <i class="bi bi-exclamation-square"></i>

@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment', [PaymentController::class, 'show'])->name('payment.show');
     Route::post('/payment/upload', [PaymentController::class, 'uploadPaymentProof'])->name('payment.upload');
 
-    Route::get('/order', [MenuItemController::class, 'index']);
+    Route::get('/order', [MenuItemController::class, 'index'])->name('order');
     Route::get('/menu-items', [MenuItemController::class, 'index']);
     Route::get('/menu-items/{id}', [MenuItemController::class, 'show']);
     Route::get('/orders/by-item-id', [OrderController::class, 'byItemId']);

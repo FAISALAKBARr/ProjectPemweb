@@ -73,4 +73,5 @@ Route::middleware('guest')->group(function () {
     Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 });
 
+
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

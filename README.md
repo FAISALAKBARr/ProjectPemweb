@@ -1,11 +1,4 @@
-<p align="center"><a href="" target="_blank"><img src="public\img\internet-cafe.png" width="400" alt="Internet Cafe Logo"></a></p>
-
-<p align="center">
-<!-- Update these links as per your project -->
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<p align="center"><a href="" target="_blank"><img src="public\img\internet-cafe.png" width="400" alt="Internet Cafe Logo">Internet Cafe Management System</a></p>
 
 ## About Internet Cafe Management System
 
@@ -30,29 +23,8 @@ To get a local copy up and running follow these simple steps:
 
 For more details, refer to the [documentation](https://github.com/your-username/your-repository/wiki).
 
-## Contributing
-
-Contributions are welcome! Fork the repository, make your changes, and submit a pull request. Please follow the [contribution guide](https://github.com/your-username/your-repository/blob/main/CONTRIBUTING.md).
-
-## Security
-
-If you discover any security-related issues, please email [your-email@example.com](mailto:your-email@example.com) instead of using the issue tracker.
-
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ---
-
-### Support Laravel Development
-
-Laravel is supported by various sponsors and contributors. Consider becoming a sponsor to support the framework's development and ongoing maintenance:
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-
-For more information, visit the [Laravel Partners program](https://partners.laravel.com).
-

@@ -53,6 +53,13 @@ class ChatController extends Controller
             ->with('sender') // Asumsikan 'sender' relationship didefinisikan di model Message
             ->orderBy('created_at', 'asc')
             ->get();
+        
+            foreach ($messages as $message) {
+                if ($message->to_user_id == $currentUserId && !$message->seen) {
+                    $message->seen = true;
+                    $message->save();
+                }
+            }
 
         return response()->json($messages);
     }

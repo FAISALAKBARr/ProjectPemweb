@@ -42,13 +42,13 @@
     @endif
     <li class="{{ Request::is('') ? 'active' : '' }}">
       <a href="{{ route('chat.cs') }}">
-        <i class="bi bi-tags"></i>
+        <i class="bi-chat-dots"></i>
         <span class="link_name">Customer Service</span>
       </a>
       <span class="tooltip shadow-sm">Costumer Service</span>
     </li>
   </ul>
   <div class="copyright">
-    <p title="&copy; <?php echo date("Y"); ?> UARTechnology. All rights reserved.">&copy; <?php echo date("Y"); ?> @lang('sidebar.UdinTechnology. All rights reserved')</p>
+    <p title="&copy; <?php echo date("Y"); ?>">&copy; <?php echo date("Y"); ?> Internet Cafe Group 3. <br>All rights reserved.</p>
   </div>
 </div>

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         .tailwind-container .chat-box {
             height: 50vh;
@@ -17,11 +18,30 @@
             display: flex;
             flex-direction: column;
         }
+        .error-message {
+            color: red;
+            display: none;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .chat-image {
+            cursor: pointer;
+            max-width: 100%;
+            max-height: 200px;
+            transition: transform 0.2s;
+        }
+        .chat-image:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
     <div class="container tailwind-container">
-        <h2 class="text-center text-2xl mb-4">Chat with Customer Service</h2>
+        <h2 class="text-center text-2xl mb-4">Customer Service</h2>
 
         <div class="flex flex-wrap">
             @if (Auth::user()->role === 'admin')
@@ -39,7 +59,12 @@
                 <div class="chat-box" id="chatBox"></div>
                 <textarea id="message" class="form-control mt-2" rows="3" placeholder="Type your message here..."></textarea>
                 <input type="file" id="imageInput" class="form-control mt-2" accept="image/*">
-                <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                <div id="error-message" class="error-message">File size exceeds 2MB.</div>
+
+                <div class="button-container">
+                    <button class="btn btn-primary" onclick="window.history.back()">Back</button>
+                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                </div>
             </div>
         </div>
     </div>
@@ -47,6 +72,7 @@
     <script>
         let selectedUserId = {{ Auth::user()->role === 'admin' ? 'null' : $admin->id }};
         const chatBox = document.getElementById('chatBox');
+        const errorMessage = document.getElementById('error-message');
 
         function selectUser(userId) {
             selectedUserId = userId;
@@ -56,13 +82,14 @@
         function fetchMessages() {
             if (!selectedUserId) return;
 
-            fetch(`/chat/messages/${selectedUserId}`)
-                .then(response => response.json())
-                .then(messages => {
+            $.ajax({
+                url: `/chat/messages/${selectedUserId}`,
+                type: 'GET',
+                success: function(messages) {
                     chatBox.innerHTML = '';
 
                     messages.forEach(message => {
-                        let messageElement = document.createElement('div');
+                        let messageElement = $('<div></div>');
                         let senderName = '';
                         let chatClass = '';
 
@@ -75,7 +102,7 @@
                         }
 
                         if (message.message_type === 'text') {
-                            messageElement.innerHTML = `
+                            messageElement.html(`
                                 <div class="${chatClass}">
                                     <div class="chat-header">
                                         ${senderName}
@@ -84,37 +111,51 @@
                                     <div class="chat-bubble bg-blue-100 p-2 rounded-md">
                                         <pre>${message.message}</pre>
                                     </div>
-                                    <div class="chat-footer text-xs opacity-50">Seen</div>
+                                    <div  ${!message.seen ? '<div class="chat-footer text-xs opacity-50">Delivered</div>' : '<div class="chat-footer text-xs opacity-50">Seen</div>'}</div>
                                 </div>
-                            `;
+                            `);
                         } else if (message.message_type === 'image') {
-                            messageElement.innerHTML = `
+                            messageElement.html(`
                                 <div class="${chatClass}">
                                     <div class="chat-header">
                                         ${senderName}
                                         <time class="text-xs opacity-50">${new Date(message.created_at).toLocaleTimeString()}</time>
                                     </div>
-                                    <img src="/storage/${message.message}" class="chat-bubble bg-blue-100 p-2 rounded-md" style="max-width: 100%; max-height: 200px;">
-                                    <div class="chat-footer text-xs opacity-50">Seen</div>
+                                    <img src="/storage/${message.message}" class="chat-bubble chat-image bg-blue-100 p-2 rounded-md">
+                                    <div  ${!message.seen ? '<div class="chat-footer text-xs opacity-50">Delivered</div>' : '<div class="chat-footer text-xs opacity-50">Seen</div>'}</div>
                                 </div>
-                            `;
+                            `);
                         }
 
-                        chatBox.appendChild(messageElement);
+                        chatBox.appendChild(messageElement[0]);
                     });
 
                     chatBox.scrollTop = chatBox.scrollHeight;
-                });
+
+                    // Add click event to all chat images
+                    $('.chat-image').on('click', function() {
+                        let imgSrc = $(this).attr('src');
+                        window.open(imgSrc, '_blank');
+                    });
+                }
+            });
         }
 
         function sendMessage() {
-            let messageInput = document.getElementById('message');
-            let imageInput = document.getElementById('imageInput');
-            let message = messageInput.value;
-            let image = imageInput.files[0];
+            let messageInput = $('#message');
+            let imageInput = $('#imageInput');
+            let message = messageInput.val();
+            let image = imageInput[0].files[0];
 
             if (!message && !image) return;
             if (!selectedUserId) return;
+
+            if (image && image.size > 2048 * 1024) { // 2MB in bytes
+                errorMessage.style.display = 'block';
+                return;
+            } else {
+                errorMessage.style.display = 'none';
+            }
 
             let formData = new FormData();
             formData.append('to_user_id', selectedUserId);
@@ -125,19 +166,21 @@
                 formData.append('message', message);
             }
 
-            fetch('/chat/send', {
-                method: 'POST',
+            $.ajax({
+                url: '/chat/send',
+                type: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'Message Sent!') {
-                    messageInput.value = '';
-                    imageInput.value = '';
-                    fetchMessages();
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.status === 'Message Sent!') {
+                        messageInput.val('');
+                        imageInput.val('');
+                        fetchMessages();
+                    }
                 }
             });
         }

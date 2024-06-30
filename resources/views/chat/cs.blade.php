@@ -62,7 +62,7 @@
                 <div id="error-message" class="error-message">File size exceeds 2MB.</div>
 
                 <div class="button-container">
-                    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+                    <button class="btn btn-primary" onclick="window.history.back()">Back</button>
                     <button class="btn btn-primary" onclick="sendMessage()">Send</button>
                 </div>
             </div>

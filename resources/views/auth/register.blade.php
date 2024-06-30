@@ -4,9 +4,9 @@
 <section class="register">
     <div class="imgBx">
         <div class="text-center">
-            <h5>Start Organizing Your Tasks</h5>
-            <h1>Join Us and Get Started</h1>
-            <p>Enjoy the convenience of managing your tasks efficiently with our Dotlist app.</p>  
+            <h5>Start Exploring Our Services</h5>
+            <h1>Welcome to Our Internet Cafe</h1>
+            <p>Experience seamless internet browsing and more at our cafe.</p>  
         </div>
         <img src="img/bg3.png" alt="">
     </div>

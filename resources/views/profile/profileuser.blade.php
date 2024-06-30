@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="card mt-3">
-                    <div class="card-header">{{ __('Your Payments') }}</div>
+                    <div class="card-header">{{ __('Your Order') }}</div>
 
                     <div class="card-body">
                         <!-- Display Payments -->

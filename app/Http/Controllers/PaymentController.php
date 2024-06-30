@@ -27,23 +27,6 @@ class PaymentController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        // Parse waktu mulai dan selesai
-        $startTime = Carbon::parse($request->date . ' ' . $request->time);
-        $endTime = $startTime->copy()->addMinutes(intval($request->duration));
-
-        // Cek apakah ada jadwal yang tumpang tindih
-        $existingPayment = Payment::where('place', $request->place)
-            ->where(function ($query) use ($startTime, $endTime) {
-                $query->whereBetween('time', [$startTime->format('H:i:s'), $endTime->format('H:i:s')])
-                    ->orWhereRaw('ADDTIME(time, SEC_TO_TIME(duration * 60)) > ?', [$startTime->format('H:i:s')]);
-            })
-            ->first();
-
-        // Jika ada jadwal yang tumpang tindih, kembali ke halaman sebelumnya dengan pesan kesalahan
-        if ($existingPayment) {
-            return redirect()->back()->with('error', 'Failed to save payment. Overlapping schedule exists.');
-        }
-
         // Simpan gambar ke penyimpanan yang diinginkan (dalam contoh ini disimpan di storage/app/public)
         if ($request->hasFile('proofPath')) {
             $proofPath = $request->file('proofPath')->store('proofPaths', 'public');

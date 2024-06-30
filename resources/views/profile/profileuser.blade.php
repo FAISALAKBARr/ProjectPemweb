@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $user->name . ' - Dotlist')
+@section('title', $user->name . ' - Internet Cafe')
 
 @section('content')
     <div class="container">
@@ -87,8 +87,8 @@
                     </div>
                 </div>
 
-                <div class="card mt-3">
-                    <div class="card-header">{{ __('Your Payments') }}</div>
+                <div class="card my-3">
+                    <div class="card-header">{{ __('Your Order PC') }}</div>
 
                     <div class="card-body">
                         <!-- Display Payments -->
@@ -138,7 +138,56 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header">{{ __('Your Order Food') }}</div>
+
+                    <div class="card-body">
+                        <!-- Display Payments -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('Amount') }}</th>
+                                        <th>{{ __('Item Number') }}</th>
+                                        <th>{{ __('Date') }}</th>
+                                        <th>{{ __('Time') }}</th>
+                                        <th>{{ __('Status') }}</th>
+                                        <th>{{ __('Proof') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($payments as $payment)
+                                        <tr>
+                                            <td>{{ $payment->amount }}</td>
+                                            <td>{{ $payment->item_number }}</td>
+                                            <td>{{ $payment->date }}</td>
+                                            <td>{{ $payment->time }}</td>
+                                            <td>
+                                                @if ($payment->confirmed)
+                                                    {{ __('Confirmed') }}
+                                                @else
+                                                    {{ __('Pending') }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($payment->proofPath)
+                                                    <a href="{{ Storage::url($payment->proofPath) }}" target="_blank">{{ __('View Proof') }}</a>
+                                                @else
+                                                    {{ __('No Proof') }}
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center">{{ __('No payments found.') }}</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

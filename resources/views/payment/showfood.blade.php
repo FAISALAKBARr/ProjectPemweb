@@ -4,21 +4,17 @@
 
 @section('content')
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Payment Details Order PC</h2>
+        <h2 class="text-center mb-4">Payment Details Order Food</h2>
         <div class="card shadow-sm mb-4">
             <div class="card-body">
                 @php
-                    $place = request('place');
                     $itemNumber = request('item_number');
-                    $duration = request('duration');
                     $date = request('date');
                     $time = request('time');
                     $price = number_format($duration * 0.5, 2);
                 @endphp
                 <h4 class="card-title text-success">Price: ${{ $price }}</h4>
-                <p class="card-text"><strong>Place:</strong> {{ $place }}</p>
                 <p class="card-text"><strong>Item Number:</strong> {{ $itemNumber }}</p>
-                <p class="card-text"><strong>Duration:</strong> {{ $duration }} minutes</p>
                 <p class="card-text"><strong>Date:</strong> {{ $date }}</p>
                 <p class="card-text"><strong>Time:</strong> {{ $time }}</p>
             </div>
@@ -65,7 +61,7 @@
 
     <script>
         function showConfirmationModal() {
-            $('#confirmationModal').modal('show');
+            $('#confirmationModal').modal('showfood');
         }
 
         function submitForm() {

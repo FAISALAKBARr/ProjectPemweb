@@ -186,37 +186,38 @@
         }
 
         function saveSchedule() {
-            const form = document.getElementById('scheduleForm');
-            const formData = new FormData(form);
+        const form = document.getElementById('scheduleForm');
+        const formData = new FormData(form);
 
-            const selectedPlace = '{{ $selectedPlace }}';
-            const itemNumber = document.getElementById('itemNumber').value;
-            const date = document.getElementById('date').value;
-            const time = document.getElementById('time').value;
-            const duration = document.getElementById('duration').value;
-            const customDuration = document.getElementById('customDuration').value;
+        const selectedPlace = '{{ $selectedPlace }}';
+        const itemNumber = document.getElementById('itemNumber').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+        const duration = document.getElementById('duration').value;
+        const customDuration = document.getElementById('customDuration').value;
 
-            const finalDuration = duration === 'custom' ? customDuration : duration;
+        const finalDuration = duration === 'custom' ? customDuration : duration;
 
-            fetch(`/schedules/check-overlap?place=${selectedPlace}&item_number=${itemNumber}&date=${date}&time=${time}&duration=${finalDuration}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.overlap) {
-                        $('#overlapModal').modal('show');
-                    } else {
-                        const urlParams = new URLSearchParams({
-                            place: selectedPlace,
-                            item_number: itemNumber,
-                            date: date,
-                            time: time,
-                            duration: finalDuration
-                        });
+        fetch(`/schedules/check-overlap?place=${selectedPlace}&item_number=${itemNumber}&date=${date}&time=${time}&duration=${finalDuration}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.overlap) {
+                    $('#overlapModal').modal('show');
+                } else {
+                    const urlParams = new URLSearchParams({
+                        place: selectedPlace,
+                        item_number: itemNumber,
+                        date: date,
+                        time: time,
+                        duration: finalDuration
+                    });
 
-                        window.location.href = `/payment?${urlParams.toString()}`;
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
+                    window.location.href = `/payment?${urlParams.toString()}`;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
     </script>
     @endif
 @endsection

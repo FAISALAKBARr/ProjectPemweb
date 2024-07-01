@@ -13,7 +13,13 @@
     <div class="row">
         @foreach($menuItems as $menuItem)
         <div class="col-3 mb-3">
-            <button type="button" class="btn btn-light" onclick="showModal('{{ $menuItem->id }}')">{{ $menuItem->name }}</button>
+            <div class="card">
+                <img src="{{ asset('img/' . $menuItem->image) }}" class="card-img-top" alt="{{ $menuItem->name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $menuItem->name }}</h5>
+                    <button type="button" class="btn btn-light" onclick="showModal('{{ $menuItem->id }}')">Order</button>
+                </div>
+            </div>
         </div>
         @endforeach
     </div>

@@ -41,6 +41,8 @@
                         </h2>
                         <div id="collapseRegular" class="accordion-collapse collapse show" aria-labelledby="headingRegular" data-bs-parent="#placeDetailsAccordion">
                             <div class="accordion-body">
+                                {{-- Tambahkan Image Disini --}}
+                                <img src="{{ asset('img/regular.jpg') }}" alt="Regular Place Image" class="img-fluid mb-3">
                                 <p>Regular places are perfect for casual users looking for a reliable and affordable option. These areas are equipped with standard computers that provide good performance for everyday tasks and moderate gaming.</p>
                                 <ul>
                                     <li>Standard PC with moderate specs</li>
@@ -59,6 +61,8 @@
                         </h2>
                         <div id="collapsePro" class="accordion-collapse collapse" aria-labelledby="headingPro" data-bs-parent="#placeDetailsAccordion">
                             <div class="accordion-body">
+                                {{-- Tambahkan Image Disini --}}
+                                <img src="{{ asset('img/pro.jpg') }}" alt="Pro Place Image" class="img-fluid mb-3">
                                 <p>Pro places are designed for users who demand higher performance for gaming, creative work, and professional tasks. These areas are equipped with high-spec computers that can handle resource-intensive applications.</p>
                                 <ul>
                                     <li>High-spec PC with powerful hardware</li>
@@ -77,6 +81,8 @@
                         </h2>
                         <div id="collapseVIP" class="accordion-collapse collapse" aria-labelledby="headingVIP" data-bs-parent="#placeDetailsAccordion">
                             <div class="accordion-body">
+                                {{-- Tambahkan Image Disini --}}
+                                <img src="{{ asset('img/vip.jpg') }}" alt="VIP Place Image" class="img-fluid mb-3">
                                 <p>VIP places offer the ultimate experience for users who seek luxury and top-tier performance. These areas are equipped with the best computers and amenities to provide an exceptional user experience.</p>
                                 <ul>
                                     <li>Top-tier PC with the latest hardware</li>

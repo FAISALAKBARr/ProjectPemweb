@@ -77,3 +77,4 @@ class PaymentController extends Controller
         return redirect()->route('admin.payments');
     }
 }
+

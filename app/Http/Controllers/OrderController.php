@@ -21,6 +21,6 @@ class OrderController extends Controller
         $order->special_requests = $request->special_requests;
         $order->save();
 
-        return response()->json(['message' => 'Order saved successfully']);
+        return redirect()->route('order.payment.form', ['orderId' => $order->id]);
     }
 }

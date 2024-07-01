@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Dotlist')</title>
+    <title>@yield('title', 'Internet Cafe')</title>
     
     {{-- link icon web --}}
     <link rel="icon" href="{{ asset('img/internet-cafe.png') }}">

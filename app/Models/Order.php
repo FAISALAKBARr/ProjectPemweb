@@ -9,6 +9,15 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['item_id', 'quantity', 'special_requests'];
+    protected $fillable = ['item_id', 'quantity', 'special_requests', 'confirmed'];
+
+    protected $casts = [
+        'confirmed' => 'boolean',
+    ];
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
 }
 

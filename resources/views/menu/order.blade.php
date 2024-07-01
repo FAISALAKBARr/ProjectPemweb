@@ -22,7 +22,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="orderForm">
+                <form id="orderForm" action="{{ route('order.store') }}" method="POST">
+                    @csrf
                     <input type="hidden" id="itemId" name="item_id">
                     <div class="form-group">
                         <label for="quantity">Quantity:</label>
@@ -38,7 +39,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveOrder()">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="saveOrder()">Order</button>
             </div>
         </div>
     </div>

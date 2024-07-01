@@ -12,7 +12,9 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminPaymentController;
+use App\Http\Controllers\OrderPaymentController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\AdminFoodOrderController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 
 Route::middleware('auth')->group(function () {
@@ -21,9 +23,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
 });
 
-Route::middleware(['auth', EnsureAdmin::class])->group(function () { // Gunakan kelas EnsureAdmin secara langsung
+Route::middleware(['auth', EnsureAdmin::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     
+    Route::get('/admin/food-orders', [AdminFoodOrderController::class, 'index'])->name('admin.food_orders');
+    Route::patch('/admin/food-orders/{order}/confirm', [AdminFoodOrderController::class, 'confirm'])->name('admin.food_orders.confirm');
+    Route::delete('/admin/food-orders/{order}', [AdminFoodOrderController::class, 'destroy'])->name('admin.food_orders.destroy');
+
     Route::get('/admin/payments', [AdminPaymentController::class, 'payments'])->name('admin.payments');
     Route::delete('/payments/{payment}', [AdminPaymentController::class, 'destroy'])->name('admin.payments.destroy');
     Route::patch('/admin/payments/{id}/confirm', [PaymentController::class, 'confirm'])->name('admin.payments.confirm');
@@ -55,7 +61,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/menu-items', [MenuItemController::class, 'index']);
     Route::get('/menu-items/{id}', [MenuItemController::class, 'show']);
     Route::get('/orders/by-item-id', [OrderController::class, 'byItemId']);
-    Route::post('/orders', [OrderController::class, 'store']);
+    
+    Route::post('/orders', [OrderController::class, 'store'])->name('order.store');
+    Route::get('/order/{orderId}/payment', [OrderPaymentController::class, 'showPaymentForm'])->name('order.payment.form');
+    Route::post('/order/{orderId}/payment', [OrderPaymentController::class, 'processPayment'])->name('order.payment.process');// Tambahkan rute ini
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->middleware('auth');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
@@ -72,5 +81,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.auth');
     Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 });
+
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

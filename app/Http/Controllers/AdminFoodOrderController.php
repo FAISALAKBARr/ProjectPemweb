@@ -27,25 +27,4 @@ class AdminFoodOrderController extends Controller
 
         return redirect()->route('admin.food_orders');
     }
-
-    //     public function foodOrders()
-    // {
-    //     $orders = Order::all();
-    //     return view('admin.food_orders', compact('orders'));
-    // }
-
-    // public function destroyOrder(Order $order)
-    // {
-    //     $order->delete();
-    //     return redirect()->route('admin.food_orders')->with('success', 'Order deleted successfully');
-    // }
-
-    // public function confirmOrder($id)
-    // {
-    //     $order = Order::findOrFail($id);
-    //     $order->confirmed = true;
-    //     $order->save();
-
-    //     return redirect()->route('admin.food_orders');
-    // }
 }

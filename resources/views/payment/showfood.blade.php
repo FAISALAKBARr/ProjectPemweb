@@ -11,9 +11,9 @@
                     $itemNumber = request('item_number');
                     $date = request('date');
                     $time = request('time');
-                    $price = number_format($duration * 0.5, 2);
+                    $price = 0; // Set a default price if duration is not defined
                 @endphp
-                <h4 class="card-title text-success">Price: ${{ $price }}</h4>
+                <h4 class="card-title text-success">Price: ${{ number_format($price, 2) }}</h4>
                 <p class="card-text"><strong>Item Number:</strong> {{ $itemNumber }}</p>
                 <p class="card-text"><strong>Date:</strong> {{ $date }}</p>
                 <p class="card-text"><strong>Time:</strong> {{ $time }}</p>
@@ -23,11 +23,11 @@
         <form id="paymentForm" action="{{ route('payment.upload') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
             @csrf
             <input type="hidden" name="amount" value="{{ $price }}">
-            <input type="hidden" name="place" value="{{ $place }}">
+            <input type="hidden" name="place" value="{{ $place ?? '' }}">
             <input type="hidden" name="item_number" value="{{ $itemNumber }}">
             <input type="hidden" name="date" value="{{ $date }}">
             <input type="hidden" name="time" value="{{ $time }}">
-            <input type="hidden" name="duration" value="{{ $duration }}">
+            <input type="hidden" name="duration" value="{{ $duration ?? '' }}">
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             <div class="form-group mb-3">
                 <label for="proofPath" class="form-label">Upload Payment Proof:</label>
@@ -61,7 +61,7 @@
 
     <script>
         function showConfirmationModal() {
-            $('#confirmationModal').modal('showfood');
+            $('#confirmationModal').modal('show');
         }
 
         function submitForm() {

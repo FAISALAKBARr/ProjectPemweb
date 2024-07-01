@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,9 +14,10 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $payments = $user->payments;
-        return view('profile.profileuser', compact('user', 'payments'));
+        $orders = Order::where('user_id', $user->id)->get(); // Fetch orders related to the user
+        return view('profile.profileuser', compact('user', 'payments', 'orders'));
     }
-
+    
     public function update(Request $request)
     {
         $user = Auth::user();

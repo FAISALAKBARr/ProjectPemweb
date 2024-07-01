@@ -87,6 +87,7 @@
                     </div>
                 </div>
 
+                @if(Auth::check() && Auth::user()->role != 'admin')
                 <div class="card my-3">
                     <div class="card-header">{{ __('Your Order PC') }}</div>
 
@@ -150,46 +151,33 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>{{ __('Amount') }}</th>
-                                        <th>{{ __('Item Number') }}</th>
-                                        <th>{{ __('Date') }}</th>
-                                        <th>{{ __('Time') }}</th>
+                                        <th>{{ __('Item ID') }}</th>
+                                        <th>{{ __('Quantity') }}</th>
+                                        <th>{{ __('Special Requests') }}</th>
                                         <th>{{ __('Status') }}</th>
-                                        <th>{{ __('Proof') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($payments as $payment)
+                                    @foreach ($orders as $order)
                                         <tr>
-                                            <td>{{ $payment->amount }}</td>
-                                            <td>{{ $payment->item_number }}</td>
-                                            <td>{{ $payment->date }}</td>
-                                            <td>{{ $payment->time }}</td>
+                                            <td>{{ $order->item_id }}</td>
+                                            <td>{{ $order->quantity }}</td>
+                                            <td>{{ $order->special_requests }}</td>
                                             <td>
-                                                @if ($payment->confirmed)
+                                                @if ($order->confirmed)
                                                     {{ __('Confirmed') }}
                                                 @else
                                                     {{ __('Pending') }}
                                                 @endif
                                             </td>
-                                            <td>
-                                                @if ($payment->proofPath)
-                                                    <a href="{{ Storage::url($payment->proofPath) }}" target="_blank">{{ __('View Proof') }}</a>
-                                                @else
-                                                    {{ __('No Proof') }}
-                                                @endif
-                                            </td>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="8" class="text-center">{{ __('No payments found.') }}</td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>

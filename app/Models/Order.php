@@ -9,7 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['item_id', 'quantity', 'special_requests', 'confirmed'];
+    protected $fillable = ['user_id', 'item_id', 'quantity', 'special_requests', 'confirmed'];
 
     protected $casts = [
         'confirmed' => 'boolean',
@@ -20,4 +20,3 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 }
-

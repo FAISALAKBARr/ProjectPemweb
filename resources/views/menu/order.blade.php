@@ -4,6 +4,12 @@
 
 @section('content')
 <div class="container">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="row">
         @foreach($menuItems as $menuItem)
         <div class="col-3 mb-3">
@@ -27,7 +33,7 @@
                     <input type="hidden" id="itemId" name="item_id">
                     <div class="form-group">
                         <label for="quantity">Quantity:</label>
-                        <input type="number" class="form-control" id="quantity" name="quantity" required>
+                        <input type="number" class="form-control" id="quantity" name="quantity" required min="0">
                     </div>
                     <div class="form-group">
                         <label for="specialRequests">Special Requests:</label>
@@ -91,7 +97,11 @@ function saveOrder() {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        if (data.success) {
+            window.location.href = "{{ route('order') }}";
+        } else {
+            alert(data.message);
+        }
         $('#orderModal').modal('hide');
         form.reset();
     })

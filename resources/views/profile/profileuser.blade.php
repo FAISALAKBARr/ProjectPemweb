@@ -152,6 +152,7 @@
                                 <thead>
                                     <tr>
                                         <th>{{ __('Item ID') }}</th>
+                                        <th>{{ __('Name') }}</th>
                                         <th>{{ __('Quantity') }}</th>
                                         <th>{{ __('Special Requests') }}</th>
                                         <th>{{ __('Status') }}</th>
@@ -161,6 +162,7 @@
                                     @foreach ($orders as $order)
                                         <tr>
                                             <td>{{ $order->item_id }}</td>
+                                            <td>{{ $order->menuItem->name }}</td>
                                             <td>{{ $order->quantity }}</td>
                                             <td>{{ $order->special_requests }}</td>
                                             <td>

@@ -14,7 +14,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $payments = $user->payments;
-        $orders = Order::where('user_id', $user->id)->get(); // Fetch orders related to the user
+        $orders = Order::with('menuItem')->where('user_id', $user->id)->get();
         return view('profile.profileuser', compact('user', 'payments', 'orders'));
     }
     

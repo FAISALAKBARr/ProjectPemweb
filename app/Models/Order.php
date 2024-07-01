@@ -19,4 +19,10 @@ class Order extends Model
     {
         return $this->hasOne(Payment::class);
     }
+
+    public function menuItem()
+    {
+        return $this->belongsTo(MenuItem::class, 'item_id');
+    }
+
 }

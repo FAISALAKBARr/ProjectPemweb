@@ -40,15 +40,42 @@
     </li>
     
     @endif
-    <li class="{{ Request::is('') ? 'active' : '' }}">
+    <li class="{{ Request::is('chat/cs') ? 'active' : '' }}">
       <a href="{{ route('chat.cs') }}">
-        <i class="bi-chat-dots"></i>
+        <i class="bi bi-chat-dots"></i>
         <span class="link_name">Customer Service</span>
+        @if(Auth::check())
+          @php
+            $unreadCount = \App\Models\Message::where('to_user_id', Auth::id())->where('seen', false)->count();
+          @endphp
+          @if($unreadCount > 0)
+          <span id="unread-badge" class="badge badge-pill ms-2" style="background-color: red; color: white;">{{ $unreadCount }}</span>
+          @endif
+        @endif
       </a>
-      <span class="tooltip shadow-sm">Costumer Service</span>
+      <span class="tooltip shadow-sm">Customer Service</span>
     </li>
+
   </ul>
   <div class="copyright">
     <p title="&copy; <?php echo date("Y"); ?>">&copy; <?php echo date("Y"); ?> Internet Cafe Group 3. <br>All rights reserved.</p>
   </div>
 </div>
+<script>
+  // Auto refresh unread message count every 30 seconds
+  setInterval(function() {
+    fetch('{{ route('chat.unreadCount') }}')
+      .then(response => response.json())
+      .then(data => {
+        const unreadCount = data.unread_count;
+        const badge = document.getElementById('unread-badge');
+        if (unreadCount > 0) {
+          badge.textContent = unreadCount;
+          badge.style.display = 'inline-block'; // Show badge if there are unread messages
+        } else {
+          badge.style.display = 'none'; // Hide badge if there are no unread messages
+        }
+      })
+      .catch(error => console.error('Error fetching unread messages count:', error));
+  }, 5000); 
+</script>

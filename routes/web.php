@@ -21,7 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.cs');
     Route::get('/chat/messages/{userId}', [ChatController::class, 'fetchMessages']);
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+    Route::get('/chat/users', [ChatController::class, 'getUsers']);
+    Route::get('/chat/unread-count', [ChatController::class, 'countUnreadMessages'])->name('chat.unreadCount');
 });
+
 
 Route::middleware(['auth', EnsureAdmin::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');

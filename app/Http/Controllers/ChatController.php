@@ -95,4 +95,23 @@ class ChatController extends Controller
 
         return response()->json(['status' => 'Message Sent!']);
     }
+
+    public function getUsers()
+    {
+        // Ambil semua pengguna yang bukan admin dan tidak termasuk user yang sedang login
+        $users = User::where('role', '!=', 'admin')
+                     ->where('id', '!=', auth()->id())
+                     ->get();
+        
+        return response()->json($users);
+    }
+
+    public function countUnreadMessages()
+{
+    $unreadCount = Message::where('to_user_id', Auth::id())
+                          ->where('seen', false)
+                          ->count();
+    return response()->json(['unread_count' => $unreadCount]);
+}
+
 }

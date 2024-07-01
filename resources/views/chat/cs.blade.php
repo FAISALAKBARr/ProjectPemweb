@@ -1,4 +1,3 @@
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,12 +45,8 @@
         <div class="flex flex-wrap">
             @if (Auth::user()->role === 'admin')
                 <div class="w-full md:w-1/4 mb-4 md:mb-0">
-                    <ul class="list-group">
-                        @foreach($users as $user)
-                            <li class="list-group-item">
-                                <a href="javascript:void(0);" onclick="selectUser({{ $user->id }})">{{ $user->name }}</a>
-                            </li>
-                        @endforeach
+                    <ul class="list-group" id="userList">
+                        <!-- Daftar pengguna non-admin akan diperbarui di sini oleh JavaScript -->
                     </ul>
                 </div>
             @endif
@@ -111,7 +106,7 @@
                                     <div class="chat-bubble bg-blue-100 p-2 rounded-md">
                                         <pre>${message.message}</pre>
                                     </div>
-                                    <div  ${!message.seen ? '<div class="chat-footer text-xs opacity-50">Delivered</div>' : '<div class="chat-footer text-xs opacity-50">Seen</div>'}</div>
+                                    <div ${!message.seen ? '<div class="chat-footer text-xs opacity-50">Delivered</div>' : '<div class="chat-footer text-xs opacity-50">Seen</div>'}</div>
                                 </div>
                             `);
                         } else if (message.message_type === 'image') {
@@ -122,7 +117,7 @@
                                         <time class="text-xs opacity-50">${new Date(message.created_at).toLocaleTimeString()}</time>
                                     </div>
                                     <img src="/storage/${message.message}" class="chat-bubble chat-image bg-blue-100 p-2 rounded-md">
-                                    <div  ${!message.seen ? '<div class="chat-footer text-xs opacity-50">Delivered</div>' : '<div class="chat-footer text-xs opacity-50">Seen</div>'}</div>
+                                    <div ${!message.seen ? '<div class="chat-footer text-xs opacity-50">Delivered</div>' : '<div class="chat-footer text-xs opacity-50">Seen</div>'}</div>
                                 </div>
                             `);
                         }
@@ -185,7 +180,28 @@
             });
         }
 
-        // Auto-refresh the chat box every 5 seconds
+        function fetchUsers() {
+            $.ajax({
+                url: '/chat/users',
+                type: 'GET',
+                success: function(users) {
+                    const userList = document.getElementById('userList');
+                    userList.innerHTML = '';
+
+                    users.forEach(user => {
+                        const userItem = document.createElement('li');
+                        userItem.classList.add('list-group-item');
+                        userItem.innerHTML = `<a href="javascript:void(0);" onclick="selectUser(${user.id})">${user.name}</a>`;
+                        userList.appendChild(userItem);
+                    });
+                }
+            });
+        }
+
+        fetchUsers();
+        fetchMessages();
+        // Refresh user list every 5 seconds
+        setInterval(fetchUsers, 5000);
         setInterval(fetchMessages, 5000);
     </script>
 </body>
